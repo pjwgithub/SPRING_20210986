@@ -8,4 +8,6 @@ This is project is a stating point for a Spring Boot application
 
 [프로젝트 메인 주소] (https://github/pjwgithub/SPRING_20210986)
 
-## DAY 1 - 환경설정 및 깃 허브 연동, 스프링부트 살펴보기
+## DAY 1 - 오리엔테이션션
+
+## DAY 2 - 환경설정 및 깃 허브 연동, 스프링부트 살펴보기

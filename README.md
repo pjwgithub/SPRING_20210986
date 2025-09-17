@@ -10,4 +10,4 @@ This is project is a stating point for a Spring Boot application
 
 ## DAY 1 - 오리엔테이션
 
-## DAY 2 - 환경설정 및 깃 허브 연동, 스프링부트 살펴보기
+## DAY 2 - 환경설정 및 깃 허브 연동, 2주차 연습문제까지 완료.

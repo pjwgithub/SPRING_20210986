@@ -21,4 +21,9 @@ public class DemoController {
         model.addAttribute("data5", "좋습니다.");
         return "hello2"; // hello2.html로 이동
     }
+
+    @GetMapping("/about_detailed")
+    public String about() {
+        return "about_detailed"; // about_detailed.html로 이동
+    }
 }

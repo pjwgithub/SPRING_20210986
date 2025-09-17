@@ -11,3 +11,5 @@ This is project is a stating point for a Spring Boot application
 ## DAY 1 - 오리엔테이션
 
 ## DAY 2 - 환경설정 및 깃 허브 연동, 2주차 연습문제까지 완료.
+
+## DAY 3 - 포트폴리오 작성 완료, 3주차 연습문제까지 완료.

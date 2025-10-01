@@ -20,7 +20,7 @@ public class TestService {
         return testRepository.findByName(name);
     }
 
-    // 전체 사용자 조회
+    // 4주차 연습문제
     public List<TestDB> findAllUsers() {
         return testRepository.findAll();
     }

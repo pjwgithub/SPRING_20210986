@@ -48,7 +48,7 @@ public class DemoController {
     // 하단에 맵핑 이어서 추가
     @GetMapping("/testdb")
     public String getAllTestDBs(Model model) {
-        // DB에서 모든 사용자 조회
+        // 4주차 연습문제
         List<TestDB> users = testService.findAllUsers();  
         model.addAttribute("users", users);
         return "testdb";

@@ -70,6 +70,20 @@ public class BlogController {
         return "article_edit"; // .HTML 연결
         }
 
+    // 10주차 연습문제 : 게시판 수정
+    @GetMapping("/board_edit/{id}") // 게시판 링크 지정
+    public String board_edit(Model model, @PathVariable Long id) {
+        Optional<Board> list = blogService.findByIdBoards(id); // 선택한 게시판 글
+        if (list.isPresent()) {
+            model.addAttribute("board", list.get()); // 존재하면 Article 객체를 모델에 추가
+        } else {
+            // 처리할 로직 추가 (예: 오류 페이지로 리다이렉트, 예외 처리 등)
+            return "/error_page/article_error"; // 오류 처리 페이지로 연결(이름 수정됨)
+        }
+        return "board_edit"; // .HTML 연결
+        }
+    
+
     // 5주차 연습문제 : 게시글 저장 처리 및 리다이렉트 (기존 RestController 로직 반영)
     @PostMapping("/article_write") 
     public String saveArticle(@ModelAttribute AddArticleRequest request) {
@@ -87,10 +101,15 @@ public class BlogController {
         return "redirect:/article_list"; // 글 수정 이후 .html 연결
     }
 
-    @PutMapping("/api/board_edit/{id}")
-    public String updateboard(@PathVariable Long id, @ModelAttribute AddArticleRequest request) {
-        blogService.update(id, request);
-        return "redirect:/board_list"; // 글 수정 이후 .html 연결
+    @PostMapping("/board_edit")
+    public String updateBoard(@ModelAttribute AddArticleRequest request) {
+        // DTO(request)에는 수정 대상 ID, title, content가 포함되어 있습니다.
+    
+        // 서비스의 Board 수정 전용 메소드(updateBoard)를 호출합니다.
+        blogService.updateBoard(request.getId(), request); 
+    
+        // 수정 이후 board_list.html 로 연결
+        return "redirect:/board_list"; 
     }
 
     @DeleteMapping("/api/article_delete/{id}")

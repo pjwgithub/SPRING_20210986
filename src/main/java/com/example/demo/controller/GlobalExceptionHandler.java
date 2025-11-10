@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleMethodArgumentTypeMismatchException(
             MethodArgumentTypeMismatchException ex) {
         
-        System.err.println("❌ 타입 불일치 오류 발생: 기대 타입=" + ex.getRequiredType().getSimpleName() + ", 입력 값=" + ex.getValue());
+        System.err.println(" 타입 불일치 오류 발생: 기대 타입=" + ex.getRequiredType().getSimpleName() + ", 입력 값=" + ex.getValue());
 
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", ex);

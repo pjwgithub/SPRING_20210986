@@ -27,3 +27,5 @@ This is project is a stating point for a Spring Boot application
 ## DAY 9 - 중간고사
 
 ## DAY 10 - 포트폴리오 작성 (새로운 게시판 수정) 완료, 10주차 연습문제까지 완료.
+
+## DAY 11 - 포트폴리오 작성 (새로운 게시판 게시글 추가, 삭체, 검색) 완료, 11주차 연습문제까지 완료.

@@ -13,6 +13,8 @@ import com.example.demo.model.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor // 생성자 자동 생성(부분)
@@ -34,20 +36,24 @@ public class BlogService {
         return blogRepository2.findAll();
     }
 
+    public Page<Board> findAllBoards(Pageable pageable) {
+        return blogRepository2.findAll(pageable);
+    }
+
     public Optional<Board> findByIdBoards(Long id) { // 게시판 특정 글 조회
         return blogRepository2.findById(id);
     }
 
-    public Article save(AddArticleRequest request){
-        // DTO가 없는 경우 이곳에 직접 구현 가능
-        // public ResponseEntity<Article> addArticle(@RequestParam String title, @RequestParam String content) {
-        // Article article = Article.builder()
-        // .title(title)
-        // .content(content)
-        // .build();
-        // return blogRepository.save(request.toEntity());
-        return null;
-    }
+    // public Article save(AddArticleRequest request){
+    //     // DTO가 없는 경우 이곳에 직접 구현 가능
+    //     // public ResponseEntity<Article> addArticle(@RequestParam String title, @RequestParam String content) {
+    //     // Article article = Article.builder()
+    //     // .title(title)
+    //     // .content(content)
+    //     // .build();
+    //     // return blogRepository.save(request.toEntity());
+    //     return null;
+    // }
 
     public void update(Long id, AddArticleRequest request) {
         Optional<Article> optionalArticle = blogRepository.findById(id); // 단일 글 조회
@@ -92,4 +98,16 @@ public class BlogService {
     public void deleteBoard(Long id) {
         blogRepository2.deleteById(id);
     }
+
+    public Board save(AddArticleRequest request){
+        // DTO가 없는 경우 이곳에 직접 구현 가능
+        return blogRepository2.save(request.toEntity());
+    }
+
+    public Page<Board> findAll(Pageable pageable) {
+        return blogRepository2.findAll(pageable);
+    }
+    public Page<Board> searchByKeyword(String keyword, Pageable pageable) {
+        return blogRepository2.findByTitleContainingIgnoreCase(keyword, pageable);
+    } // LIKE 검색 제공(대소문자 무시)
 }

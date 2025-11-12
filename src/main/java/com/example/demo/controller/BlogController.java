@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,12 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.service.AddArticleRequest;
 import com.example.demo.model.service.BlogService;
 
 import com.example.demo.model.domain.Article;
 import com.example.demo.model.domain.Board;
+import org.springframework.data.domain.Page;
 
 @Controller // 컨트롤러 애너테이션 명시
 
@@ -38,12 +41,43 @@ public class BlogController {
         return "article_list"; // .HTML 연결
     }
 
+    // @GetMapping("/board_list") // 새로운 게시판 링크 지정
+    // public String board_list(Model model) {
+    //     List<Board> list = blogService.findAllBoards(); // 게시판 전체 리스트, 기존 Article에서 Board로 변경됨
+    //     model.addAttribute("boards", list); // 모델에 추가
+    //     return "board_list"; // .HTML 연결
+    // }
+
     @GetMapping("/board_list") // 새로운 게시판 링크 지정
-    public String board_list(Model model) {
-        List<Board> list = blogService.findAllBoards(); // 게시판 전체 리스트, 기존 Article에서 Board로 변경됨
-        model.addAttribute("boards", list); // 모델에 추가
-        return "board_list"; // .HTML 연결
+    public String board_list(
+        Model model,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "") String keyword) {
+
+        // 한 페이지당 게시글 수: 3개
+        int pageSize = 3;
+        PageRequest pageable = PageRequest.of(page, 3);
+        Page<Board> list;
+
+        // 키워드 여부에 따라 분기
+        if (keyword.isEmpty()) {
+            list = blogService.findAllBoards(pageable); // 기본 전체 출력
+        } else {
+            list = blogService.searchByKeyword(keyword, pageable); // 키워드 검색
+        }
+
+        int startNum = (page * pageSize) + 1;
+
+        // 모델에 데이터 담기
+        model.addAttribute("boards", list);
+        model.addAttribute("totalPages", list.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("startNum", startNum);
+
+        return "board_list"; // HTML 연결
     }
+
 
     @GetMapping("/board_view/{id}") // 게시판 링크 지정
     public String board_view(Model model, @PathVariable Long id) {
@@ -56,6 +90,19 @@ public class BlogController {
             return "/error_page/article_error"; // 오류 처리 페이지로 연결
         }
         return "board_view"; // .HTML 연결
+    }
+
+    // 글쓰기 게시판
+    @GetMapping("/board_write")
+    public String board_write() {
+        return "board_write";
+    }
+
+    //생략….
+    @PostMapping("/api/boards") // 글쓰기 게시판 저장
+    public String addboards(@ModelAttribute AddArticleRequest request) {
+        blogService.save(request);
+        return "redirect:/board_list"; // .HTML 연결
     }
     
     @GetMapping("/article_edit/{id}") // 게시판 링크 지정
@@ -119,8 +166,8 @@ public class BlogController {
     }
 
     @DeleteMapping("/api/board_delete/{id}")
-    public String deleteboard(@PathVariable Long id) {
-        blogService.delete(id);
+    public String deleteBoard(@PathVariable Long id) {
+        blogService.deleteBoard(id);
         return "redirect:/board_list";
     }
 }

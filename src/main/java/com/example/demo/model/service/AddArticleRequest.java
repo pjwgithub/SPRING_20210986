@@ -1,4 +1,5 @@
 package com.example.demo.model.service;
+import com.example.demo.model.domain.Board;
 
 import lombok.*; // 어노테이션 자동 생성
 // import com.example.demo.model.domain.Article;
@@ -11,6 +12,10 @@ public class AddArticleRequest {
     
     private String title;
     private String content;
+    private String user;
+    private String newdate;
+    private String count;
+    private String likec;
 
     // public Article toEntity(){ // Article 객체 생성
     //     return Article.builder()
@@ -18,4 +23,15 @@ public class AddArticleRequest {
     //         .content(content)
     //         .build();
     // }
+
+    public Board toEntity(){ // Board 객체 생성
+        return Board.builder()
+            .title(title)
+            .content(content)
+            .user(user)
+            .newdate(newdate)
+            .count(count)
+            .likec(likec)
+            .build();
+    }
 }

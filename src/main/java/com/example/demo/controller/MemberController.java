@@ -2,11 +2,12 @@ package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model; 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.validation.Valid; // 12주차 연습문제 : 유효성 검증용 import
 import com.example.demo.model.service.MemberService;
 import com.example.demo.model.service.AddMemberRequest;
 import com.example.demo.model.domain.Member;
@@ -23,9 +24,10 @@ public class MemberController {
     }
 
     @PostMapping("/api/members") // 회원 가입 저장
-    public String addmembers(@ModelAttribute AddMemberRequest request) {
+    // 12주차 연습문제 : @Valid 추가
+    public String addmembers(@Valid @ModelAttribute AddMemberRequest request) {
         memberService.saveMember(request);
-        return "join_end"; // .HTML 연결
+        return "join_end"; 
     }
 
     @GetMapping("/member_login") // 로그인 페이지 연결

@@ -3,13 +3,16 @@ package com.example.demo.model.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated; // 12주차 연습문제 : 클래스 레벨 검증 활성화
 
 import com.example.demo.model.domain.Member;
 import com.example.demo.model.repository.MemberRepository;
 
+import jakarta.validation.Valid; // 12주차 연습문제 : 파라미터 검증 수행
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Validated // 12주차 연습문제 : 클래스 레벨 검증 활성화
 @Transactional // 트랜잭션 처리(클래스 내 모든 메소드 대상)
 @RequiredArgsConstructor
 public class MemberService {
@@ -25,7 +28,8 @@ public class MemberService {
         }
     }
 
-    public Member saveMember(AddMemberRequest request) {
+    // 12주차 연습문제 : @Valid 추가, 데이터가 들어올 때 DTO에 설정된 규칙을 검사
+    public Member saveMember(@Valid AddMemberRequest request) {
         validateDuplicateMember(request); // 이메일 중복 체크
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());

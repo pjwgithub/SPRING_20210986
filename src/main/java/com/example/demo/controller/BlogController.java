@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.model.service.AddArticleRequest;
 import com.example.demo.model.service.BlogService;
 
+import jakarta.servlet.http.HttpSession;
+
 import com.example.demo.model.domain.Article;
 import com.example.demo.model.domain.Board;
 import org.springframework.data.domain.Page;
@@ -52,7 +54,14 @@ public class BlogController {
     public String board_list(
         Model model,
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "") String keyword) {
+        @RequestParam(defaultValue = "") String keyword, HttpSession session) { // 세션 객체 전달
+        String userId = (String) session.getAttribute("userId"); // 세션 아이디 존재 확인
+        String email = (String) session.getAttribute("email"); // 세션에서 이메일 확인
+        
+        if (userId == null) {
+            return "redirect:/member_login"; // 로그인 페이지로 리다이렉션
+        }
+        System.out.println("세션 userId: " + userId); // 서버 IDE 터미널에 세션 값 출력
 
         // 한 페이지당 게시글 수: 3개
         int pageSize = 3;
@@ -74,6 +83,7 @@ public class BlogController {
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
         model.addAttribute("startNum", startNum);
+        model.addAttribute("email", email); // 로그인 사용자(이메일)
 
         return "board_list"; // HTML 연결
     }

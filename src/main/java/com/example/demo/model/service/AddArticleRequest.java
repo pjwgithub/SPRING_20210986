@@ -24,11 +24,11 @@ public class AddArticleRequest {
     //         .build();
     // }
 
-    public Board toEntity(){ // Board 객체 생성
+    public Board toEntity(String currentUser){ // Board 객체 생성
         return Board.builder()
             .title(title)
             .content(content)
-            .user(user)
+            .user(currentUser) // 13주차 과제 : 현재 로그인한 사용자 이름으로 설정
             .newdate(newdate)
             .count(count)
             .likec(likec)

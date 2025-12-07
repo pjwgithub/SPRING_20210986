@@ -90,11 +90,15 @@ public class BlogController {
 
 
     @GetMapping("/board_view/{id}") // 게시판 링크 지정
-    public String board_view(Model model, @PathVariable Long id) {
+    public String board_view(Model model, @PathVariable Long id, HttpSession session) {
         Optional<Board> list = blogService.findByIdBoards(id); // 선택한 게시판 글
     
         if (list.isPresent()) {
             model.addAttribute("boards", list.get()); // 존재할 경우 실제 Board 객체를 모델에 추가
+
+            String email = (String) session.getAttribute("email");
+            model.addAttribute("loginUser", email);
+
         } else {
             // 처리할 로직 추가 (예: 오류 페이지로 리다이렉트, 예외 처리 등)
             return "/error_page/article_error"; // 오류 처리 페이지로 연결
@@ -108,10 +112,15 @@ public class BlogController {
         return "board_write";
     }
 
-    //생략….
-    @PostMapping("/api/boards") // 글쓰기 게시판 저장
-    public String addboards(@ModelAttribute AddArticleRequest request) {
-        blogService.save(request);
+    @PostMapping("/api/boards") // 글쓰기 게시판 저장, 13주차 과제
+    public String addboards(@ModelAttribute AddArticleRequest request, HttpSession session) {
+        String email = (String) session.getAttribute("email"); // 세션에서 이메일 확인
+        
+        if (email == null) {
+            return "redirect:/member_login"; 
+        }
+
+        blogService.save(request.toEntity(email));
         return "redirect:/board_list"; // .HTML 연결
     }
     
@@ -142,15 +151,15 @@ public class BlogController {
     
 
     // 5주차 연습문제 : 게시글 저장 처리 및 리다이렉트 (기존 RestController 로직 반영)
-    @PostMapping("/article_write") 
-    public String saveArticle(@ModelAttribute AddArticleRequest request) {
+    // @PostMapping("/article_write") 
+    // public String saveArticle(@ModelAttribute AddArticleRequest request) {
         
-        // 핵심 로직 재활용: blogService.save(request) 호출
-        blogService.save(request); 
+    //     // 핵심 로직 재활용: blogService.save(request) 호출
+    //     blogService.save(request); 
 
-        // JSON 반환 대신 리다이렉트 문자열 반환
-        return "redirect:/article_list";
-    }
+    //     // JSON 반환 대신 리다이렉트 문자열 반환
+    //     return "redirect:/article_list";
+    // }
 
     @PutMapping("/api/article_edit/{id}")
     public String updateArticle(@PathVariable Long id, @ModelAttribute AddArticleRequest request) {

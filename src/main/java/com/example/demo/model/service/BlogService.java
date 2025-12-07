@@ -99,9 +99,9 @@ public class BlogService {
         blogRepository2.deleteById(id);
     }
 
-    public Board save(AddArticleRequest request){
-        // DTO가 없는 경우 이곳에 직접 구현 가능
-        return blogRepository2.save(request.toEntity());
+    // 13주차 과제 : 세션 기반 사용자 정보 활용 게시글 저장
+    public Board save(Board board) {
+        return blogRepository2.save(board);
     }
 
     public Page<Board> findAll(Pageable pageable) {

@@ -34,4 +34,4 @@ This is project is a stating point for a Spring Boot application
 
 ## DAY 13 - 포트폴리오 작성 (로그인, 로그아웃) 완료, 13주차 연습문제까지 완료.
 
-## DAY 14 - 포트폴리오 작성 (메일 보내기, 지도) 완료,
+## DAY 14 - 포트폴리오 작성 (메일 보내기, 지도) 완료, 14주차 연습문제까지 완료.

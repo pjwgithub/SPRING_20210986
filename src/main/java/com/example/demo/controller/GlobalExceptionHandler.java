@@ -3,6 +3,7 @@ package com.example.demo.controller; // BlogController와 같은 패키지
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 //전역 예외 처리 클래스
@@ -24,6 +25,21 @@ public class GlobalExceptionHandler {
         // 새로운 예외용 에러 페이지 템플릿 이름 지정
         // 파일 구조에 맞게 'error_page/' 경로를 포함합니다.
         mav.setViewName("error_page/article_type_error"); 
+        
+        return mav;
+    }
+
+    // 14주차 연습문제
+    // 파일 업로드 용량 초과 예외를 처리
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ModelAndView handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+        System.err.println("파일 업로드 용량 초과: " + ex.getMessage());
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", ex);
+        mav.addObject("message", "파일 크기가 너무 큽니다. 더 작은 파일을 업로드해주세요.");
+            
+        mav.setViewName("error_page/article_error"); 
         
         return mav;
     }

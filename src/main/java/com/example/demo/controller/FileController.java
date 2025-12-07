@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Controller
 public class FileController {
@@ -33,9 +34,13 @@ public class FileController {
                 Files.createDirectories(uploadPath);
             }
 
+            String uuid = UUID.randomUUID().toString();
+
             // 파일명에서 특수문자 제거
             String sanitizedEmail = email.replaceAll("[^a-zA-Z0-9]", "_");
-            Path filePath = uploadPath.resolve(sanitizedEmail + ".txt");
+            String fileName = uuid + "_" + sanitizedEmail + ".txt"; // 14주차 연습문제
+
+            Path filePath = uploadPath.resolve(fileName);
 
             System.out.println("File path: " + filePath);
 

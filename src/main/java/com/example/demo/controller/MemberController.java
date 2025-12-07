@@ -69,18 +69,20 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/api/logout") // 로그아웃 버튼 동작
+    @GetMapping("/api/logout") // 로그아웃 버튼 동작, 14주차 연습문제
     public String member_logout(Model model, HttpServletRequest request2, HttpServletResponse response) {
 
         try {
-            HttpSession session = request2.getSession(false); // 기존 세션 가져오기(존재하지 않으면 null 반환)
-                session.invalidate(); // 기존 세션 무효화
-                Cookie cookie = new Cookie("JSESSIONID", null); // 기본 이름은 JSESSIONID
-                cookie.setPath("/"); // 쿠키의 경로
-                cookie.setMaxAge(0); // 쿠키 만료 0이면 삭제
-                response.addCookie(cookie); // 응답에 쿠키 설정
-                session = request2.getSession(true); // 새로운 세션 생성
-                System.out.println("세션 userId: " + session.getAttribute("userId" )); // 초기화 후 IDE 터미널에 세션 값 출력
+            HttpSession session = request2.getSession(false); 
+            if (session != null) {
+                session.invalidate(); // 기존 세션 무효화 (삭제)
+                
+                Cookie cookie = new Cookie("JSESSIONID", null); 
+                cookie.setPath("/"); 
+                cookie.setMaxAge(0); // 쿠키 즉시 삭제
+                response.addCookie(cookie); 
+            }
+
                 return "login"; // 로그인 페이지로 리다이렉트
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage()); // 에러 메시지 전달
